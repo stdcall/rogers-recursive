@@ -1,0 +1,23 @@
+-- Lean checks of the book; one file per statement in RogersRecursive/.
+import RogersRecursive.Ch01_04Ackermann
+import RogersRecursive.Ch01_04Scheme
+import RogersRecursive.Ch01_04Diagonal
+import RogersRecursive.Ch01_04Invariance
+import RogersRecursive.Ch05_07Pairing
+import RogersRecursive.Ch05_07Numbering
+import RogersRecursive.Ch05_07Myhill
+import RogersRecursive.Ch08_09Counting
+import RogersRecursive.Ch08_09Cylinder
+import RogersRecursive.Ch08_09Productive
+import RogersRecursive.Ch08_09Retraceable
+import RogersRecursive.Ch08_09Operators
+import RogersRecursive.Ch10_12Recursion
+import RogersRecursive.Ch10_12Sets
+import RogersRecursive.Ch10_12Lattice
+import RogersRecursive.Ch13_14JumpInversion
+import RogersRecursive.Ch13_14Degrees
+import RogersRecursive.Ch13_14Quantifiers
+import RogersRecursive.Ch13_14Arithmetic
+import RogersRecursive.Ch15_16Prefix
+import RogersRecursive.Ch15_16Trees
+import RogersRecursive.Ch15_16Functionals

@@ -1,0 +1,565 @@
+[
+ {
+  "file": "checks/lean/RogersRecursive/Ch01_04Ackermann.lean",
+  "declarations": [
+   "RogersRecursive.Ch01_04.Ackermann.level0",
+   "RogersRecursive.Ch01_04.Ackermann.level1",
+   "RogersRecursive.Ch01_04.Ackermann.level2",
+   "RogersRecursive.Ch01_04.Ackermann.at_one",
+   "RogersRecursive.Ch01_04.Ackermann.informal",
+   "RogersRecursive.Ch01_04.Ackermann.informal_fails_at_zero",
+   "RogersRecursive.Ch01_04.Ackermann.level_succ_zero"
+  ],
+  "book": "§ 1.2, p. 25: Ackermann's function f(z, x, y), defined by the printed formal equations f(0, 0, y) = y, f(0, x + 1, y) = f(0, x, y) + 1, f(1, 0, y) = 0, f(z + 2, 0, y) = 1, f(z + 1, x + 1, y) = f(z, f(z + 1, x, y), y). Proved for all arguments: f(0, x, y) = y + x, f(1, x, y) = y x, f(2, x, y) = y^x (the first three printed lines of the informal description), and the informal line 'f(z + 1, x, y) is the result of applying to y, x - 1 times, the operation of level z, λuv[f(z, u, v)]' for every x >= 1, as f(z + 1, x + 1, y) = (λu[f(z, u, y)])^[x](y). At x = 0 the informal line, read with x - 1 = 0, would give y, whereas f(1, 0, y) = 0 and f(z + 2, 0, y) = 1: the informal description covers x >= 1 and the formal equations that follow fix x = 0 (no correction of the text).",
+  "limitations": "The order of the arguments of the level-z operation (u the running value, y the fixed one) is taken from the formal equations. Not covered: that λx[f(x, x, x)] is not primitive recursive (footnote, p. 25); primitive recursive functions are not formalized. Values on small ranges are also computed in checks/haskell/CheckCh01Primitive.hs.",
+  "passages": [
+   "sec:primitive-recursive-functions"
+  ]
+ },
+ {
+  "file": "checks/lean/RogersRecursive/Ch01_04Scheme.lean",
+  "declarations": [
+   "RogersRecursive.Ch01_04.Scheme.f₅_eq",
+   "RogersRecursive.Ch01_04.Scheme.f₆_eq",
+   "RogersRecursive.Ch01_04.Scheme.f₆_not_selection",
+   "RogersRecursive.Ch01_04.Scheme.f₆_by_substitution",
+   "RogersRecursive.Ch01_04.Scheme.hHat_eq",
+   "RogersRecursive.Ch01_04.Scheme.H_eq",
+   "RogersRecursive.Ch01_04.Scheme.h_eq",
+   "RogersRecursive.Ch01_04.Scheme.fmin_eq",
+   "RogersRecursive.Ch01_04.Scheme.g_eq"
+  ],
+  "book": "§ 1.2, pp. 23-24: the derivation of λx[2x], written line by line with clause (v) as explicit recursion; f₅ = λyx[x + y] and f₆ = λx[2x] for all arguments. The last line is printed 'f = f₆ = f₅(f₁, f₁) by (iii)': f₆ is not λx[x], the only selection function (iii) of one variable (refuted printed reading), and is the substitution of f₁, f₁ into f₅, clause (iv) (the corrected reading). Exercise 2-1 (p. 62) with its hint: ĥ = λx[max(0, x - 1)] and f = λx[min(x, 1)] by (v) with k = 1, h = λxy[max(0, x - y)] from ĥ by (v) and a substitution, and h(1, f(h(x, k))) is the step function g of § 1.3 (p. 26): 1 for x <= k, 0 for k < x.",
+  "limitations": "The clauses (i)-(v) are used as explicit definitions; the class of primitive recursive functions (the least class closed under them) is not formalized. The computation of f(2) on p. 24 is checked step by step in checks/haskell/CheckCh01Primitive.hs.",
+  "passages": [
+   "sec:primitive-recursive-functions",
+   "sec:extensionality",
+   "ex:g-primitive-recursive"
+  ]
+ },
+ {
+  "file": "checks/lean/RogersRecursive/Ch01_04Diagonal.lean",
+  "declarations": [
+   "RogersRecursive.Ch01_04.Diagonal.total_diagonal",
+   "RogersRecursive.Ch01_04.Diagonal.diagonal_diverges",
+   "RogersRecursive.Ch01_04.Diagonal.halting",
+   "RogersRecursive.Ch01_04.Diagonal.halting_counterexample",
+   "RogersRecursive.Ch01_04.Diagonal.self_halting",
+   "RogersRecursive.Ch01_04.Diagonal.enum_mem",
+   "RogersRecursive.Ch01_04.Diagonal.enum_lt",
+   "RogersRecursive.Ch01_04.Diagonal.le_enum",
+   "RogersRecursive.Ch01_04.Diagonal.enum_onto",
+   "RogersRecursive.Ch01_04.Diagonal.totality_diagonal",
+   "RogersRecursive.Ch01_04.Diagonal.totality_undecidable",
+   "RogersRecursive.Ch01_04.Diagonal.rice",
+   "RogersRecursive.Ch01_04.Diagonal.no_recursive_extension",
+   "RogersRecursive.Ch01_04.Diagonal.mu_decides",
+   "RogersRecursive.Ch01_04.Diagonal.not_mu_of_total"
+  ],
+  "book": "The diagonal arguments of chapters 1-2, each from exactly the facts the book takes from Church's thesis, the s-m-n theorem and theorem 1-I, stated as hypotheses on an arbitrary numbering φ (partial functions ℕ → Option ℕ) and arbitrary classes PR, Rec1, Rec2. § 1.4, p. 27: h(x) = g_x(x) + 1 is no g_x. § 1.5, p. 29, and the remark after theorem 2-II, p. 59: at an index x₀ of λx[φ_x(x) + 1] the value diverges. Theorem 1-VII, informal proof (no g ∈ Rec2 decides the halting relation) and more formal proof (for every z, φ_z^(2) is undefined or wrong at ⟨h(z), h(z)⟩). Corollary 1-VII. Theorem 1-VIII: the μ-enumeration g(0) = μy[f(y) = 1], g(x + 1) = μy[y > g(x) & f(y) = 1] is built and proved to be strictly increasing onto {y | f(y) = 1}, and h = λx[φ_(g(x))(x) + 1] cannot have an index. Rice's theorem as stated in § 2.1 (p. 56; exercise 2-39 (a)), both directions. Theorem 2-II (no recursive extension of λx[φ_x(x) + 1]). Theorem 2-III: if λx[μy[f(x, y) = 1]] (μ as defined in the introduction) equals ψ(x) = x for convergent φ_x(x), divergent otherwise, then f(x, x) = 1 decides the halting set, against corollary 1-VII.",
+  "limitations": "Church's thesis, the s-m-n theorem, Turing machines and the numbering are not formalized: their uses are the hypotheses (hind: every member of PR has an index; hct: the diagonal function built from a recursive decision procedure is in PR; for Rice, the s-m-n function h with φ_(h(x)) = θ if φ_x(x) converges and nowhere defined otherwise, h ∈ Rec1, closure of Rec1 under composition and 1 - (·), the constants; for theorem VIII, theorem 1-I and an index of h; for theorem 2-III, that λx[1 if f(x, x) = 1 else 0] is in Rec1). Mathlib.Computability (Nat.Partrec.Code, ComputablePred.halting_problem, ComputablePred.rice) is not used: it is not built in the pinned local mathlib checkout.",
+  "passages": [
+   "sec:diagonalization",
+   "sec:formalization",
+   "th:halting-problem",
+   "cor:self-halting-problem",
+   "th:totality-undecidable",
+   "sec:new-unsolvable-problems",
+   "ex:rice-theorem",
+   "th:no-recursive-extension",
+   "th:not-mu-of-total"
+  ]
+ },
+ {
+  "file": "checks/lean/RogersRecursive/Ch01_04Invariance.lean",
+  "declarations": [
+   "RogersRecursive.Ch01_04.Invariance.search_right",
+   "RogersRecursive.Ch01_04.Invariance.search_left",
+   "RogersRecursive.Ch01_04.Invariance.search_bijective",
+   "RogersRecursive.Ch01_04.Invariance.group_closure",
+   "RogersRecursive.Ch01_04.Invariance.isomorphic_functions",
+   "RogersRecursive.Ch01_04.Invariance.eta_identity",
+   "RogersRecursive.Ch01_04.Invariance.universality_invariance",
+   "RogersRecursive.Ch01_04.Invariance.universality_recursive_invariance",
+   "RogersRecursive.Ch01_04.Invariance.universality_range_permutation"
+  ],
+  "book": "Chapter 4. Theorem I (§ 4.2, pp. 74-75): the search 'compute f(0), f(1), ... until f(n) = x' gives the two-sided inverse of a bijection f of ℕ and is a bijection; with Rec1 closed under composition (theorem 1-VI) and under this search (Church's thesis), the recursive bijections are closed under composition and inverse. Theorem II (§ 4.3, p. 76), for every bijection f and partial functions φ, ψ: graph ψ = f(graph φ) iff φ = f⁻¹ψf, both directions as in the book's proof. Theorem III (§ 4.5, p. 78): if ψ is universal (ψ ∈ PR and φ_x = λy[ψ f(x, y)] with f ∈ Rec2), g, h are recursive permutations and k ∈ Rec1 satisfies φ_(k(x)) = gφ_x (s-m-n), then η = g⁻¹ψh is universal with f^ = λxy[h⁻¹ f(k(x), y)], by the printed chain of equalities; corollaries (a) g⁻¹ψg and (b) gψ.",
+  "limitations": "Recursive permutations are bijections (Nat ≃ Nat in theorems II and III); recursiveness enters only through closure hypotheses on arbitrary classes Rec1, Rec2, PR (theorem 1-VI, Church's thesis, the s-m-n theorem). Theorem II and the hint of exercise 4-6 are also checked on finite sets in checks/haskell/CheckCh01Invariance.hs.",
+  "passages": [
+   "th:recursive-permutations-group",
+   "th:isomorphic-functions",
+   "th:universality-invariance",
+   "cor:universality-recursive-invariance",
+   "cor:universality-range-permutation"
+  ]
+ },
+ {
+  "file": "checks/lean/RogersRecursive/Ch05_07Pairing.lean",
+  "declarations": [
+   "RogersRecursive.Ch05_07.tau_eq",
+   "RogersRecursive.Ch05_07.tau_inj",
+   "RogersRecursive.Ch05_07.tau_surjective",
+   "RogersRecursive.Ch05_07.pairs_listing",
+   "RogersRecursive.Ch05_07.tauN_snoc",
+   "RogersRecursive.Ch05_07.example_one",
+   "RogersRecursive.Ch05_07.tauN_inj",
+   "RogersRecursive.Ch05_07.tauN_surjective",
+   "RogersRecursive.Ch05_07.tauStar_second_form",
+   "RogersRecursive.Ch05_07.tauStar_injective",
+   "RogersRecursive.Ch05_07.tauStar_surjective",
+   "RogersRecursive.Ch05_07.viii_a",
+   "RogersRecursive.Ch05_07.viii_b",
+   "RogersRecursive.Ch05_07.viii_c",
+   "RogersRecursive.Ch05_07.viii_d_forward",
+   "RogersRecursive.Ch05_07.viii_d_backward"
+  ],
+  "book": "§ 5.3, pp. 89-90: tau(x, y) = 1/2 (x^2 + 2xy + y^2 + 3x + y) = (0 + 1 + ... + (x + y)) + x and the lemma of § 5.3 (tau one-one from N x N onto N); the listing of p. 89 (0, ..., 7 code <0,0>, <0,1>, <1,0>, <0,2>, <1,1>, <2,0>, <0,3>, <1,2>); tau^n by the inductive definition of p. 90 (tau^n of x_1 :: [x_2, ..., x_n] is List.foldl tau x_1 [x_2, ..., x_n]) and example 1 (<2, 1, 0> = <<2, 1>, 0> = <8, 0> = 44); every tau^n is one-one on n-tuples and onto N. § 5.6, p. 98: the two printed forms of tau^* agree, and tau^* is one-one from all finite tuples (lists) onto N ('эффективным взаимно однозначным отображением на', p. 99); exercise 5-30 (the inverse of tau^*) is answered by the surjectivity proof: n = pi_2(z - 1) + 1, (x_1, ..., x_n) = pi^n(pi_1(z - 1)). § 7.6, p. 121, theorem VIII (a)-(d): lambda x [<x, 0>] is one-one and reduces A to A x N; pi_1 reduces A x N to A; for f reducing B to C, lambda x [<f(x), x>] is one-one and reduces B to C x N; the composites of the proof of (d) in both directions.",
+  "limitations": "That the maps are recursive (Church's thesis in the book) is not formalized; a reduction is the condition (forall x)[x in A <=> f(x) in B] for an arbitrary function; pi_1 is chosen through the surjectivity of tau. The step A =_1 A x N => A = A x N of (c) is theorem VI (Ch05_07Myhill.lean). Bounded computations of pi_1, pi_2, pi_i^n, the canonical indices D_x and the inverse of tau^* are in checks/haskell/CheckCh05Codings.hs.",
+  "passages": [
+   "sec:re-relations",
+   "sec:finite-sets",
+   "ex:tau-star-inverse",
+   "th:cylinder-properties"
+  ]
+ },
+ {
+  "file": "checks/lean/RogersRecursive/Ch05_07Numbering.lean",
+  "declarations": [
+   "RogersRecursive.Ch05_07.compl_K_ne",
+   "RogersRecursive.Ch05_07.uniform_iff_imp",
+   "RogersRecursive.Ch05_07.K_compl_productive",
+   "RogersRecursive.Ch05_07.K_compl_completely_productive",
+   "RogersRecursive.Ch05_07.productive_transfer",
+   "RogersRecursive.Ch05_07.basic_lemma",
+   "RogersRecursive.Ch05_07.cylinder_lemma",
+   "RogersRecursive.Ch05_07.inseparable_step",
+   "RogersRecursive.Ch05_07.mutual_productive",
+   "RogersRecursive.Ch05_07.one_one_productive",
+   "RogersRecursive.Ch05_07.creative_product",
+   "RogersRecursive.Ch05_07.join_left",
+   "RogersRecursive.Ch05_07.join_right",
+   "RogersRecursive.Ch05_07.join_lub",
+   "RogersRecursive.Ch05_07.ex7_4_printed_fails",
+   "RogersRecursive.Ch05_07.ex7_4_reduction",
+   "RogersRecursive.Ch05_07.ex7_4_corrected",
+   "RogersRecursive.Ch05_07.ex7_4_iff",
+   "RogersRecursive.Ch05_07.coding_not_invariant",
+   "RogersRecursive.Ch05_07.reducibility_invariance"
+  ],
+  "book": "W : N -> Set N stands for W_0, W_1, ... (any sequence of sets), K = {x | x in W_x}, partial functions are N -> Option N. Theorem 5-VI (p. 88): no W_m is the complement of K (the book's short proof that K is not recursive). Theorem 5-XIV (p. 95): the printed '<=>' and '=>' give the same condition, since '<=' holds for every psi by theorem 5-II (the 05-01 question). Example 1 of § 7.3 (p. 115) and p. 125: K-bar is productive and completely productive with lambda x [x]. Theorem 7-V (b) (p. 116): f psi g is a productive function for B. The lemma of theorem 7-VII (pp. 119-120): the function g of the proof has both properties. Theorem 7-XII (c) (p. 127): f(u, v) is outside W_u union W_v. The basic lemma of § 7.8 (p. 131) and exercise 7-55. Theorem 7-II (b) (p. 112): A <=m A (+) B via 2x, B via 2x + 1, A (+) B <=m C via h(2x) = f(x), h(2x + 1) = g(x). Exercise 7-4 (p. 133): A = N, B = N - {0} satisfy the printed hypotheses but no function reduces B to N; as corrected (A, B different from N) A, B reduce to each other by finite modifications of the identity; the exact condition for infinite A, B with finite (A - B) union (B - A) is [A = N <=> B = N]. Exercises 7-22, 7-49 (productive functions lambda x [x] and f), 7-26 as corrected (A <=m B x B-bar; f_1 psi e is productive for B-bar), 5-22 ({1} x N and N x {1} are not isomorphic as relations), 6-8.",
+  "limitations": "Recursiveness and recursive enumerability are not formalized: the index functions (g, h, e of the proofs, given by the s-m-n theorem), the sets A_0, A_1 of 7-XII (c) and the element e of f(K) - D in the lemma of 7-VII (sublemma (b): f(K) is infinite) enter as hypotheses with the properties the book derives for them. A reduction is (forall x)[x in A <=> f(x) in B] for an arbitrary function; in exercise 7-4 the reducing functions differ from the identity on a finite set, hence are general recursive. Not covered: the construction of f' in theorem 7-VII (its search is fprime_search in Ch05_07Myhill.lean), theorem 7-XI.",
+  "passages": [
+   "th:k-re-not-recursive",
+   "th:recursive-closure",
+   "exm:k-creative",
+   "sec:productiveness",
+   "th:productive-properties",
+   "lem:basic-lemma",
+   "ex:basic-lemma",
+   "th:m-complete-iff-one-complete",
+   "th:effectively-inseparable-pairs",
+   "ex:creative-mutual-membership",
+   "ex:one-one-productive-creative",
+   "ex:creative-product-reduction",
+   "th:incomparable-semilattice",
+   "ex:finite-difference-m-equivalent",
+   "ex:coding-not-invariant",
+   "ex:reducibility-invariance"
+  ]
+ },
+ {
+  "file": "checks/lean/RogersRecursive/Ch05_07Myhill.lean",
+  "declarations": [
+   "RogersRecursive.Ch05_07.back_some",
+   "RogersRecursive.Ch05_07.back_none",
+   "RogersRecursive.Ch05_07.orbit_side",
+   "RogersRecursive.Ch05_07.orbit_distinct",
+   "RogersRecursive.Ch05_07.orbit_terminates",
+   "RogersRecursive.Ch05_07.extend_corr",
+   "RogersRecursive.Ch05_07.myhill_lemma",
+   "RogersRecursive.Ch05_07.ext_spec",
+   "RogersRecursive.Ch05_07.swap_corr",
+   "RogersRecursive.Ch05_07.stage_zero",
+   "RogersRecursive.Ch05_07.stage_mono",
+   "RogersRecursive.Ch05_07.stage_corr",
+   "RogersRecursive.Ch05_07.stage_cover",
+   "RogersRecursive.Ch05_07.sigma_mem",
+   "RogersRecursive.Ch05_07.myhill_iso",
+   "RogersRecursive.Ch05_07.fprime_search"
+  ],
+  "book": "§ 7.4, theorem VI (Myhill), pp. 116-118. Finite correspondences (lists with distinct first and distinct second components and x_i in C <=> y_i in D). The lemma (p. 117), for every one-one f with C <=_1 D via f and every finite correspondence of length n: the chain f(x'), f(x_(i_1)), ... of the printed procedure visits distinct first components, stops after at most n + 1 computations of f, and adding <x', y'> gives a finite correspondence. The stages of the proof as printed (stage 2k: first component k by the lemma with g; stage 2k + 1: second component k by the lemma with h, A and B exchanged; stage 0 gives <0, g(0)>): every stage keeps a finite correspondence, after stage 2k + 1 the number k is a first and a second component, and the limit map sigma is a permutation of N with x in A <=> sigma(x) in B. § 7.5, proof of theorem VII (p. 119): the search for f'(n + 1) with D_(x_0) = {f'(m_0)}, D_(x_1) = {f'(m_0), f'(m_1)}, ... stays in {f'(0), ..., f'(n)}, grows by one element at each step and keeps the side of f(n + 1), so it ends in fewer than n + 2 steps with a new value on the same side.",
+  "limitations": "That the stages and sigma are recursive (effective procedures, Church's thesis in the book) is not formalized; the result of the lemma's procedure is defined as f at the first element of the chain whose image is not a second component. Reductions are (forall x)[x in A <=> f(x) in B] with f one-one, arbitrary otherwise. The lemma of theorem VII itself is cylinder_lemma in Ch05_07Numbering.lean; the stages and the f' construction are also run on models in checks/haskell/CheckCh05Reductions.hs.",
+  "passages": [
+   "th:myhill-isomorphism",
+   "th:m-complete-iff-one-complete"
+  ]
+ },
+ {
+  "file": "checks/lean/RogersRecursive/Ch08_09Counting.lean",
+  "declarations": [
+   "RogersRecursive.Ch08_09.Counting.post_selection_card",
+   "RogersRecursive.Ch08_09.Counting.block_not_subset",
+   "RogersRecursive.Ch08_09.Counting.boolean_count_lt",
+   "RogersRecursive.Ch08_09.Counting.derived_count_lt"
+  ],
+  "book": "§ 8.1, proof of Post's theorem th:simple-set-exists (p. 141), part (ii): if every x selects at most one y with y > 2x (the first such y of W_x), at most k numbers of {0, ..., 2k} are selected (post_selection_card). § 8.4, proof of th:simple-tt-complete (p. 148): every block S_x = {2^x - 1, ..., 2^(x+1) - 2} has 2^x = k + 1 elements in {0, ..., 2k}, k = 2^x - 1, so it is not inside S (block_not_subset). § 8.5, the lemma of th:btt-complete-not-simple (p. 153), (iii): 2^(2^0) + ... + 2^(2^m) < 2^(2^(m+1)), the count of boolean functions of at most m arguments (boolean_count_lt). § 9.6, the lemma of th:tt-complete-not-hypersimple (p. 186), (iii): 2^(2^d) 2^d = 2^(2^d + d) < 2^(2^(d+1)) (derived_count_lt).",
+  "limitations": "S is the set of values of an arbitrary selection sel : ℕ → Option ℕ with sel x = some y → 2x < y; its recursive enumerability and the simplicity of S and S* are not formalized. The derivability steps of the two lemmas (which need n-tuples without repeated numbers, as corrected on p. 152) are checked on finite models in checks/haskell/CheckCh08TruthTable.hs and CheckCh09Turing.hs, not here.",
+  "passages": [
+   "th:simple-set-exists",
+   "th:simple-tt-complete",
+   "th:btt-complete-not-simple",
+   "th:tt-complete-not-hypersimple"
+  ],
+  "required_olean": [
+   "Mathlib/Data/Finset/Card.olean",
+   "Mathlib/Algebra/BigOperators/Group/Finset/Basic.olean",
+   "Mathlib/Order/Interval/Finset/Nat.olean",
+   "Mathlib/Tactic/Linarith.olean"
+  ]
+ },
+ {
+  "file": "checks/lean/RogersRecursive/Ch08_09Cylinder.lean",
+  "declarations": [
+   "RogersRecursive.Ch08_09.Cylinder.mem_join_even",
+   "RogersRecursive.Ch08_09.Cylinder.mem_join_odd",
+   "RogersRecursive.Ch08_09.Cylinder.iterate_aux",
+   "RogersRecursive.Ch08_09.Cylinder.iterate_reduction",
+   "RogersRecursive.Ch08_09.Cylinder.printed_backward_fails",
+   "RogersRecursive.Ch08_09.Cylinder.printed_forward_fails"
+  ],
+  "book": "§ 8.8, exercise 8-29 (ex:join-of-cylinders, p. 163), (b), as corrected: A (+) A <=_1 A <=> A is a cylinder (printed A (+) B <=_1 A). The step =>: from a one-one f with n in A (+) A <-> f n in A, the map h(x, n) = f_1^n(f_0(x)), f_0 x = f(2x), f_1 x = f(2x + 1), is one-one on N x N and keeps membership in A, i.e. A x N <=_1 A (iterate_reduction). The printed reading fails in both directions: the cylinder A = empty = empty x N with B = N (printed_backward_fails), and A (+) N <=_1 A for every A containing the multiples of 3 (printed_forward_fails), in particular (up to a recursive permutation) for simple sets, which are not cylinders by th:simple-sets-properties (d).",
+  "limitations": "Sets are predicates on ℕ, A (+) B = {2x | x in A} u {2x + 1 | x in B}. Not covered: recursiveness of the maps, the characterization of cylinders by A x N <=_1 A (§ 7.6, th:cylinder-properties), the facts on simple sets and on K, K-bar quoted for the nondegenerate counterexample.",
+  "passages": [
+   "ex:join-of-cylinders"
+  ],
+  "required_olean": [
+   "Mathlib/Logic/Function/Iterate.olean",
+   "Mathlib/Data/Set/Basic.olean",
+   "Mathlib/Tactic/Set.olean"
+  ]
+ },
+ {
+  "file": "checks/lean/RogersRecursive/Ch08_09Productive.lean",
+  "declarations": [
+   "RogersRecursive.Ch08_09.Productive.not_productive_of_index",
+   "RogersRecursive.Ch08_09.Productive.productive_diff",
+   "RogersRecursive.Ch08_09.Productive.compl_diff_eq",
+   "RogersRecursive.Ch08_09.Productive.complement_productive"
+  ],
+  "book": "§ 8.8, exercise 8-42 (ex:semicreative-not-creative, p. 165), the hint of (vi). As printed it uses the productiveness of B - A, which is r.e. by (ii); a set with an index W_e is never productive (not_productive_of_index). As corrected (the productiveness of A-bar - (B - A)): a productive set minus an r.e. subset R is productive with the productive function p o u, W_(u(x)) = W_x u R (productive_diff); A-bar - (B - A) = B-bar for A subset B (compl_diff_eq); so if A were creative, B-bar would be productive (complement_productive), against the simplicity of B (v).",
+  "limitations": "W : ℕ → Set ℕ is an arbitrary numbering and u an arbitrary index function of the unions; recursiveness of p o u, the existence of u (th:re-closure-uniform) and the infinite r.e. subset of a productive set (th:productive-infinite-re-subset) are not formalized.",
+  "passages": [
+   "ex:semicreative-not-creative"
+  ],
+  "required_olean": [
+   "Mathlib/Data/Set/Basic.olean"
+  ]
+ },
+ {
+  "file": "checks/lean/RogersRecursive/Ch08_09Retraceable.lean",
+  "declarations": [
+   "RogersRecursive.Ch08_09.Retraceable.iterate_mem",
+   "RogersRecursive.Ch08_09.Retraceable.trace"
+  ],
+  "book": "§ 9.9, exercise 9-44 (ex:retraceable-sets, p. 206), the definition of a retraceable set and (i), as corrected: [A retraceable & B subset A & B infinite] => A <=_T B (printed B supset A). The bounded step: if psi retraces A and b in A, then for x <= b, x in A <-> psi^k(b) = x for some k <= b - x (trace); the chain stays in A (iterate_mem). With an oracle for the infinite B subset A one finds b in B, b >= x, and decides x in A. For B supset A the step needs b in A; with B = N the printed claim would make every retraceable set recursive, against (iv).",
+  "limitations": "psi is total on ℕ and used only on A, where the book's partial function is defined. Not covered: the recursiveness of the procedure in B, parts (ii)-(x), the non-recursive retraceable set of (iv) (its branches are checked on finite paths in checks/haskell/CheckCh09Turing.hs).",
+  "passages": [
+   "ex:retraceable-sets"
+  ],
+  "required_olean": [
+   "Mathlib/Logic/Function/Iterate.olean",
+   "Mathlib/Data/Set/Basic.olean"
+  ]
+ },
+ {
+  "file": "checks/lean/RogersRecursive/Ch08_09Operators.lean",
+  "declarations": [
+   "RogersRecursive.Ch08_09.Operators.Phi_mono",
+   "RogersRecursive.Ch08_09.Operators.Phi_cont",
+   "RogersRecursive.Ch08_09.Operators.SV_mono",
+   "RogersRecursive.Ch08_09.Operators.total_domain",
+   "RogersRecursive.Ch08_09.Operators.PhiP_mono",
+   "RogersRecursive.Ch08_09.Operators.total_domain_PhiP",
+   "RogersRecursive.Ch08_09.Operators.SVf_mono",
+   "RogersRecursive.Ch08_09.Operators.star_mono",
+   "RogersRecursive.Ch08_09.Operators.star_sv",
+   "RogersRecursive.Ch08_09.Operators.phiSigma_sv",
+   "RogersRecursive.Ch08_09.Operators.printed_not_mono",
+   "RogersRecursive.Ch08_09.Operators.printed_not_sv"
+  ],
+  "book": "§ 9.7, the enumeration operators Phi_z (p. 191) and th:enumeration-operator-properties (p. 193): monotone (Phi_mono) and continuous (Phi_cont). § 9.8, th:total-domain-recursive-operator (p. 195) in set form: a monotone map of sets of pairs that sends the graph of every total function to a single-valued set sends every single-valued set to one (total_domain, total_domain_PhiP). th:fundamental-operator-theorem (pp. 196-197), the set (*) (eq:operator-extension-set) as corrected (D_s subset D_t, and D_(s') u D_t not single-valued for the preceding <<x, y'>, s'>): the lemma lem:operator-extension-monotone (star_mono) and the first part of the proof, that Phi_sigma(z) maps single-valued sets to single-valued sets (star_sv, phiSigma_sv). As printed (D_t subset D_s, D_(s') u D_s) the lemma fails for W_z = (<<0, 0>, {<0, 0>}>) (printed_not_mono), and the image of the empty set is not single-valued for the identity operator on the argument 0 (printed_not_sv).",
+  "limitations": "Pairs are ℕ x ℕ (the codes tau(a, b), tau a bijection), W_z in its standard order is a finite list, D_t a Finset. Not covered: recursive enumerability of W_sigma(z), the function sigma, the last part of the proof (Phi_sigma(z)(tau f) = Phi_z(tau f) when the latter is single-valued; checked on finite models in checks/haskell/CheckCh09Operators.hs), theorems 9-XX and 9-XXIV.",
+  "passages": [
+   "th:enumeration-operator-properties",
+   "th:total-domain-recursive-operator",
+   "th:fundamental-operator-theorem",
+   "eq:operator-extension-set",
+   "lem:operator-extension-monotone"
+  ],
+  "required_olean": [
+   "Mathlib/Data/Finset/Basic.olean",
+   "Mathlib/Data/Set/Basic.olean",
+   "Mathlib/Order/Monotone/Basic.olean",
+   "Mathlib/Order/Fin/Basic.olean"
+  ]
+ },
+ {
+  "file": "checks/lean/RogersRecursive/Ch10_12Recursion.lean",
+  "declarations": [
+   "RogersRecursive.Ch10_12.Recursion.fixed_point",
+   "RogersRecursive.Ch10_12.Recursion.fixed_point_uniform",
+   "RogersRecursive.Ch10_12.Recursion.fixed_point_parameters",
+   "RogersRecursive.Ch10_12.Recursion.kleene_fixed",
+   "RogersRecursive.Ch10_12.Recursion.kleene_injective_iff",
+   "RogersRecursive.Ch10_12.Recursion.padded_choice",
+   "RogersRecursive.Ch10_12.Recursion.double_recursion",
+   "RogersRecursive.Ch10_12.Recursion.descending_chain",
+   "RogersRecursive.Ch10_12.Recursion.chain_distinct",
+   "RogersRecursive.Ch10_12.Recursion.fixed_point_not_minimal"
+  ],
+  "book": "§ 11.2, pp. 233-236: theorem I (n = g~(v) is a fixed point of f: phi_n = phi_f(n)), theorem II (n(z) = g~ v~(z), phi_n(z) = phi_(phi_z(n(z))) for total phi_z), theorem III with one parameter (n_f(x) = g~(v, x)), theorem IV (Kleene): the fixed-point property of n = lambda z x y [g~~(t(v~~(z), y), x)] as printed, and n is one-one if and only if v~~ is one-one (kleene_injective_iff); lambda z [t(v~~(z), z)] is a one-one v~~ with the same functions (padded_choice) - the corrected proof of p. 236 ('Пусть v~~ - взаимно однозначная общерекурсивная функция'). § 11.4: theorem VII (pp. 240-241): with f' as in the proof (W_(f'(x, y)) = {phi_x phi_x(y)}, f'(x, y) > y) the fixed point n of h gives g = phi_n with g(y) > y and W_(g(y)) = {g(g(y))}, and the chain m_(i + 1) = g(m_i) strictly increases (its terms are distinct); theorem X (a) (Smullyan, p. 246) from theorems I and III. § 11.5, theorem XIII (pp. 253-254): phi_m is the identity off n(m), phi_m(n(m)) = t, phi_(n(m)) = lambda y [0].",
+  "limitations": "Church's thesis and the s-m-n theorem are not formalized: the functions they give are hypotheses with exactly the properties the proofs use (phi_(g~(u))(x) = phi_(phi_u(u))(x) or divergent; v a code of f g~; phi_(v~(z)) = phi_z g~; the padding t of theorem 7-IV, one-one, with phi_(t(a, b)) = phi_a in one and two variables; a one-one pairing; for theorem X (a) the conclusions of theorems I, III as properties of classes Rec1, Rec2 and the step 'k is general recursive'). One parameter instead of k in theorems III, IV. Partial functions are Nat -> Option Nat. Mathlib.Computability is not used (not built in the pinned local mathlib checkout). The constructions are also run on a toy numbering in checks/haskell/CheckCh11Recursion.hs.",
+  "passages": [
+   "th:fixed-point",
+   "th:fixed-point-uniform",
+   "th:fixed-point-parameters",
+   "th:recursion-theorem",
+   "th:descending-chain",
+   "th:double-recursion",
+   "th:fixed-point-not-minimal"
+  ]
+ },
+ {
+  "file": "checks/lean/RogersRecursive/Ch10_12Sets.lean",
+  "declarations": [
+   "RogersRecursive.Ch10_12.Sets.stage_succ",
+   "RogersRecursive.Ch10_12.Sets.stage_mono",
+   "RogersRecursive.Ch10_12.Sets.finite_in_stage",
+   "RogersRecursive.Ch10_12.Sets.fixed",
+   "RogersRecursive.Ch10_12.Sets.least",
+   "RogersRecursive.Ch10_12.Sets.young_h",
+   "RogersRecursive.Ch10_12.Sets.young_f"
+  ],
+  "book": "§ 11.5, theorem XI (pp. 249-250), (i) and (ii): for Phi monotone and continuous (x in Phi(B) => x in Phi(D) for a finite D subset B, theorem 9-XXI), A_0 = 0, A_(n + 1) = Phi(A_n), A = union of the A_n: the A_n increase, Phi(A) = A (both chains of the proof, the first as corrected on p. 249), and A subset B for every B with Phi(B) = B. § 10.3, theorem IV (Young, p. 218), the step with h: for g one-one, B = g^(-1)(D), m, n not in D, n not a value of g, h(x) = n if g(x) = m and g(x) otherwise is one-one and B = h^(-1)(D u {m}); A = f^(-1)(D u {m}) when m is not a value of f.",
+  "limitations": "Theorem XI (iii) (A recursively enumerable) and the relation to Phi_z and W_z are not formalized; Phi is an arbitrary monotone continuous map of sets of naturals. Theorem IV: simplicity, Tennenbaum's exercise 10-10 and the lemma of theorem 8-XIV are not formalized; the reductions are arbitrary functions. Random enumeration operators on {0, ..., 5} and all small instances of the step with h are checked in checks/haskell/CheckCh11Recursion.hs and CheckCh10Priority.hs.",
+  "passages": [
+   "th:enumeration-operator-fixed-point",
+   "th:one-reducibility-no-join"
+  ]
+ },
+ {
+  "file": "checks/lean/RogersRecursive/Ch10_12Lattice.lean",
+  "declarations": [
+   "RogersRecursive.Ch10_12.Lattice.rel_iff_single",
+   "RogersRecursive.Ch10_12.Lattice.rel_equivalence",
+   "RogersRecursive.Ch10_12.Lattice.rel_sup",
+   "RogersRecursive.Ch10_12.Lattice.rel_inf",
+   "RogersRecursive.Ch10_12.Lattice.ideal_is_class",
+   "RogersRecursive.Ch10_12.Lattice.ideal_is_zero",
+   "RogersRecursive.Ch10_12.Lattice.quotient_order",
+   "RogersRecursive.Ch10_12.Lattice.distrib_sup_to_inf",
+   "RogersRecursive.Ch10_12.Lattice.distrib_inf_to_sup",
+   "RogersRecursive.Ch10_12.Lattice.complement_unique",
+   "RogersRecursive.Ch10_12.Lattice.compl_step",
+   "RogersRecursive.Ch10_12.Lattice.rel_compl",
+   "RogersRecursive.Ch10_12.Lattice.ideal_iff_dual",
+   "RogersRecursive.Ch10_12.Lattice.rel_eq_relD",
+   "RogersRecursive.Ch10_12.Lattice.lachlan_diagonal"
+  ],
+  "book": "§ 12.1, theorem I (pp. 288-290): (a) in a distributive lattice, for an ideal I (nonempty, closed under join, a meet c in I for c in I), a ~_I b <=> (exists c_1, c_2 in I)[a join c_1 = b join c_2] is an equivalence (exercise 12-7) compatible with join and meet (the congruence step of the proof), I is a class and the zero of L/I (exercise 12-8), and [a] <= [b] in L/I iff a <= b join c for some c in I (exercise 12-6); (c) in a Boolean algebra the complement respects ~_I, I is an ideal iff D = {a | a-bar in I} is a dual ideal, and then ~_I = ~_D, through the corrected step a-bar join c_1 = (a meet c_1-bar)-bar of p. 290. Exercise 12-3 (by the hint: complements are unique in a distributive lattice with 0 and 1) and exercise 12-4 (each distributive law implies the other, in any lattice). § 12.6, theorem XX (Lachlan, p. 315), the direction <=: with the W_(f(x)) pairwise disjoint and each meeting A-bar, B = A u union_x (W_x cap W_(f(x))), the set A u (N - B) is no W_y.",
+  "limitations": "Theorem I (b) and (d) and the exercises 12-5, 12-9, 12-10 are checked only on finite lattices (checks/haskell/CheckCh12Lattice.hs). In theorem XX the family W is arbitrary (recursive enumerability, the direction => and theorem XIX are not formalized). The quotient lattice is described by the relation, not built as a type.",
+  "passages": [
+   "th:quotient-lattices",
+   "ex:ideal-equivalence",
+   "ex:ideal-zero-class",
+   "ex:quotient-order",
+   "ex:unique-complement",
+   "ex:distributive-identities",
+   "th:hyperhypersimple-lattice-theoretic"
+  ]
+ },
+ {
+  "file": "checks/lean/RogersRecursive/Ch13_14JumpInversion.lean",
+  "declarations": [
+   "RogersRecursive.Ch13_14.JumpInversion.star_prefix",
+   "RogersRecursive.Ch13_14.JumpInversion.star_found",
+   "RogersRecursive.Ch13_14.JumpInversion.seg_mono",
+   "RogersRecursive.Ch13_14.JumpInversion.length_seg",
+   "RogersRecursive.Ch13_14.JumpInversion.prefixOf_limit_seg",
+   "RogersRecursive.Ch13_14.JumpInversion.prefixOf_mono",
+   "RogersRecursive.Ch13_14.JumpInversion.jump_eq",
+   "RogersRecursive.Ch13_14.JumpInversion.limit_decode"
+  ],
+  "book": "§ 13.3, Friedberg's theorem th:jump-inversion (pp. 341-342), the construction and parts (i), (ii) of the proof; the notation phi_z^[f] of § 13.1 (pg:segment-notation, p. 332). For any family of oracle computations on initial segments whose values persist on extensions (p. 333) and any g: the segments f_0 = empty, f_(n+1) = f* u {<x_n, g(n)>} form a chain (seg_mono, length_seg, prefixOf_limit_seg); the set of stages n + 1 where an extension with phi_n^[.](n) defined was found is exactly the jump {n | phi_n^f(n) is defined} of the union f (jump_eq, part (i)); g(n) is the value of f at x_n, the length of f* (limit_decode, part (ii)).",
+  "limitations": "The oracle computations are an arbitrary family Phi n sigma x with the persistence property, phi_n^F(x) defined when some initial segment of F gives a value; the extension f* is any chosen one (the book takes the first in an effective enumeration). Not formalized: the recursiveness of the procedures relative to A and K, i.e. the reducibilities B' <=_T A and A <=_T B'.",
+  "passages": [
+   "th:jump-inversion",
+   "pg:segment-notation"
+  ],
+  "required_olean": [
+   "Mathlib/Order/Basic.olean"
+  ]
+ },
+ {
+  "file": "checks/lean/RogersRecursive/Ch13_14Degrees.lean",
+  "declarations": [
+   "RogersRecursive.Ch13_14.Degrees.incomparable_of_not_mem",
+   "RogersRecursive.Ch13_14.Degrees.printed_strict_fails",
+   "RogersRecursive.Ch13_14.Degrees.printed_minimality_trivial",
+   "RogersRecursive.Ch13_14.Degrees.medvedev_not_or_not_not",
+   "RogersRecursive.Ch13_14.Degrees.kripke_root_fails",
+   "RogersRecursive.Ch13_14.Degrees.jump_injective"
+  ],
+  "book": "cor:incomparable-with-countable (p. 348), its proof as corrected: with A_x = {c | c <= a_x or a_x <= c} every b outside the union is incomparable with every a_x (incomparable_of_not_mem); with the printed strict inequalities the step fails for the family {a} (printed_strict_fails). cor:minimal-degree-below-0-double-jump (p. 359): the printed (exists b)[b < a => b = 0] holds for every a (printed_minimality_trivial). § 13.7, p. 372: with the printed values of not A (1 for A /= 1, 0 for A = 1) and 'or' the greatest lower bound, not A or not not A = 0 for every A (medvedev_not_or_not_not); on the Kripke frame r < a, r < b with p true at a only, r forces neither not p nor not not p (kripke_root_fails). ex:jump-productive (v) (p. 381): A' = B' => A = B (jump_injective).",
+  "limitations": "Degrees are elements of an arbitrary preorder, the Medvedev degrees of an arbitrary bounded lattice with the printed values of not; the category statements, the Medvedev lattice itself and the soundness of the intuitionistic calculus for Kripke frames (quoted: Chagrov, Zakharyaschev, Modal Logic, 1997, § 2.5, Prop. 2.37, Cor. 2.44) are not formalized; in jump_injective the index e n with e n in X' <=> n in X for all X (a consequence of the s-m-n theorem) is a hypothesis.",
+  "passages": [
+   "cor:incomparable-with-countable",
+   "cor:minimal-degree-below-0-double-jump",
+   "sec:medvedev-lattice",
+   "ex:jump-productive"
+  ],
+  "required_olean": [
+   "Mathlib/Order/BoundedOrder/Lattice.olean",
+   "Mathlib/Data/Set/Basic.olean"
+  ]
+ },
+ {
+  "file": "checks/lean/RogersRecursive/Ch13_14Quantifiers.lean",
+  "declarations": [
+   "RogersRecursive.Ch13_14.Quantifiers.exists_or_rule",
+   "RogersRecursive.Ch13_14.Quantifiers.forall_or_rule",
+   "RogersRecursive.Ch13_14.Quantifiers.exists_and_rule",
+   "RogersRecursive.Ch13_14.Quantifiers.forall_and_rule",
+   "RogersRecursive.Ch13_14.Quantifiers.exists_imp_rule",
+   "RogersRecursive.Ch13_14.Quantifiers.forall_imp_rule",
+   "RogersRecursive.Ch13_14.Quantifiers.imp_exists_rule",
+   "RogersRecursive.Ch13_14.Quantifiers.imp_forall_rule",
+   "RogersRecursive.Ch13_14.Quantifiers.forall_imp_fails_empty",
+   "RogersRecursive.Ch13_14.Quantifiers.U_or",
+   "RogersRecursive.Ch13_14.Quantifiers.U_and",
+   "RogersRecursive.Ch13_14.Quantifiers.imp_U",
+   "RogersRecursive.Ch13_14.Quantifiers.U_imp",
+   "RogersRecursive.Ch13_14.Quantifiers.U_U_lt",
+   "RogersRecursive.Ch13_14.Quantifiers.not_U_U_lt_swapped",
+   "RogersRecursive.Ch13_14.Quantifiers.U_iff_forall_exists_gt",
+   "RogersRecursive.Ch13_14.Quantifiers.U_forall_iff"
+  ],
+  "book": "§ 14.3, point 2 (p. 395), used in th:definable-in-hierarchy: the eight prenex rules over a nonempty domain; the rule for (forall a) F => G fails over the empty domain (forall_imp_fails_empty). § 14.8 (p. 421): the four rules for moving the quantifier U ('for infinitely many') to the left, (U x)(U y)[x < y] true and (U y)(U x)[x < y] false; th:pi-two-u-form, step <=: (U y) S(y) <=> (forall u)(exists y)[y > u & S(y)]; the lemma of th:kreisel-shoenfield-wang, step <=: (U y)(forall z) S(y, z) <=> (forall x)(exists y)(forall z)[y >= x & S(y, z)].",
+  "limitations": "Formulas are propositions over ℕ (or a nonempty type); U F is the infiniteness of {a | F a}. The completeness results of § 14.8 and the relativized hierarchy are not formalized.",
+  "passages": [
+   "th:definable-in-hierarchy",
+   "th:pi-two-u-form",
+   "th:kreisel-shoenfield-wang"
+  ],
+  "required_olean": [
+   "Mathlib/Order/Interval/Finset/Nat.olean",
+   "Mathlib/Data/Set/Finite/Basic.olean"
+  ]
+ },
+ {
+  "file": "checks/lean/RogersRecursive/Ch13_14Arithmetic.lean",
+  "declarations": [
+   "RogersRecursive.Ch13_14.Arithmetic.bounded_swap",
+   "RogersRecursive.Ch13_14.Arithmetic.mem_canonical_lt",
+   "RogersRecursive.Ch13_14.Arithmetic.mul_eq_zero_iff_int",
+   "RogersRecursive.Ch13_14.Arithmetic.ne_zero_iff_mul_self_eq_succ",
+   "RogersRecursive.Ch13_14.Arithmetic.printed_rule_fails",
+   "RogersRecursive.Ch13_14.Arithmetic.printed_fermat_false",
+   "RogersRecursive.Ch13_14.Arithmetic.fermat_z_pos"
+  ],
+  "book": "§ 14.3, property 1 of bounded quantifiers (p. 398), as corrected with pi_(a+1)^(b+1): (forall a <= b)(exists c) R(a, c) <=> (exists c)(forall a <= b) R(a, dec(c, a)) for every decoding under which each (b + 1)-tuple has a code (bounded_swap). p. 399 and th:strong-hierarchy (p. 404): x in D_u => x < u (mem_canonical_lt). The editorial footnote to th:goedel-polynomial (p. 401), third operation: alpha beta = 0 <=> alpha = 0 or beta = 0; as corrected, not (alpha = 0) <=> (exists c)(alpha alpha = c + 1) for integers; the printed (exists c)(alpha = c + 1) fails at alpha = -1 (printed_rule_fails). § 14.7, p. 414: the printed formula for Fermat's theorem is false (x = 0, y = z = 1, w = 3); with x > 0 a solution has z > 0 (fermat_z_pos).",
+  "limitations": "The codes of tuples are an arbitrary decoding with the coding hypothesis (for pi_j^(b+1) it follows from tau^(b+1) being onto with inverses pi_j^(b+1), § 5.3; checked on models in checks/haskell/CheckCh14Hierarchy.hs). Fermat's theorem itself and the prenex procedure of the footnote are not formalized.",
+  "passages": [
+   "sec:tarski-kuratowski-algorithm",
+   "th:strong-hierarchy",
+   "th:goedel-polynomial",
+   "sec:logic-applications"
+  ],
+  "required_olean": [
+   "Mathlib/Tactic/Linarith.olean",
+   "Mathlib/Tactic/NormNum.olean"
+  ]
+ },
+ {
+  "file": "checks/lean/RogersRecursive/Ch15_16Prefix.lean",
+  "declarations": [
+   "RogersRecursive.Ch15_16.Prefix.rule_i_exists",
+   "RogersRecursive.Ch15_16.Prefix.rule_i_forall",
+   "RogersRecursive.Ch15_16.Prefix.rule_ii_exists",
+   "RogersRecursive.Ch15_16.Prefix.rule_ii_forall",
+   "RogersRecursive.Ch15_16.Prefix.rule_iii_exists",
+   "RogersRecursive.Ch15_16.Prefix.rule_iii_forall",
+   "RogersRecursive.Ch15_16.Prefix.rule_iv",
+   "RogersRecursive.Ch15_16.Prefix.rule_iv_dual",
+   "RogersRecursive.Ch15_16.Prefix.ak_i_exists",
+   "RogersRecursive.Ch15_16.Prefix.ak_i_forall",
+   "RogersRecursive.Ch15_16.Prefix.ak_ii",
+   "RogersRecursive.Ch15_16.Prefix.ak_ii_dual"
+  ],
+  "book": "§ 16.1, pp. 480-485. Theorem 16-III (Kleene) and its proof: (i) two number quantifiers of one kind contract into one through the pairing function; (ii) two function quantifiers of one kind contract into one, h coding f and g as pi_1 h, pi_2 h; (iii) a number quantifier (forall x) R(x) becomes (forall f) R(f(0)), the same for exists; (iv) (forall x)(exists f) R(f, x) <=> (exists f)(forall x) R(lambda y [f(<x, y>)], x) (choice, as exercise 16-2 says) and the dual (exists x)(forall f) <=> (forall f)(exists x). Theorem 16-VII (Addison and Kleene): (i) the step of the proof, (exists f)(exists w) T(fbar(w)) <=> (exists tuple) T(tuple), and the forall form; (ii) (forall f)(exists x)(exists g) R(fbar(x), x, g) <=> (exists g)(forall f)(exists x) R(fbar(x), x, lambda y [g(<fbar(x), y>)]) when R depends on f only through fbar(x), and the dual (exists f)(forall x)(forall g) <=> (forall g)(exists f)(forall x).",
+  "limitations": "Nat.pair, Nat.unpair stand for tau, pi_1, pi_2 (only unpair (pair a b) = (a, b) is used); fbar(x) = c(<f(0), ..., f(x - 1)>) with any one-one coding c (tau^* of § 5.6 is one). The relations are arbitrary propositions: the equivalence of the forms is proved, not that the new relations are recursive (the other half of exercises 16-2 and 16-4), nor the normal form theorem used in the proof of 16-VII (i). The procedure of corollary 16-III and the printed chains are checked in checks/haskell/CheckCh16Trees.hs.",
+  "passages": [
+   "th:kleene-prefix-rules",
+   "cor:alternating-prefix",
+   "th:addison-kleene-prefix-rules",
+   "ex:prefix-rules-proof",
+   "ex:addison-kleene-rules-proof"
+  ]
+ },
+ {
+  "file": "checks/lean/RogersRecursive/Ch15_16Trees.lean",
+  "declarations": [
+   "RogersRecursive.Ch15_16.Trees.finitePath_iff_wf",
+   "RogersRecursive.Ch15_16.Trees.finitePath_iff_functions",
+   "RogersRecursive.Ch15_16.Trees.ordAt_sprout",
+   "RogersRecursive.Ch15_16.Trees.treeOrd_eq",
+   "RogersRecursive.Ch15_16.Trees.ord_lemma",
+   "RogersRecursive.Ch15_16.Trees.ord_lemma_two",
+   "RogersRecursive.Ch15_16.Trees.basic_tree_lemma",
+   "RogersRecursive.Ch15_16.Trees.basic_tree_lemma_two",
+   "RogersRecursive.Ch15_16.Trees.chain_ord",
+   "RogersRecursive.Ch15_16.Trees.A3_eq",
+   "RogersRecursive.Ch15_16.Trees.A3_ord",
+   "RogersRecursive.Ch15_16.Trees.A5_ord",
+   "RogersRecursive.Ch15_16.Trees.succTree_ord",
+   "RogersRecursive.Ch15_16.Trees.succ_case"
+  ],
+  "book": "§ 16.3, pp. 502-506: a tree (a set of tuples closed under initial segments) is a finite-path tree (no infinite chain of vertices from the top) iff (forall f)(exists x)[fbar(x) not in tau] (p. 503, exercise 16-21) iff the relation 'lies immediately below' is well founded. The ordinals o_tau(a) of p. 503 (1 at a terminal vertex, else the least ordinal above the values below) and o(tau) (0 for the empty tree); the n-th sprout {y | n * y in tau} (p. 505): o_(sigma_n)(y) = o_tau(n * y), and o(tau) = sup_n (o(sigma_n) + 1) for a nonempty tree. The basic tree lemma (p. 505) in both printed forms. The examples of pp. 502-504: A_3 = {(), <0>, <0, 0>, <0, 0, 0>} has ordinal 4, A_5 (the tuples <n, n + 1, ..., m>, n <= m <= 2n) has ordinal omega; a chain of m + 1 vertices has ordinal m + 1. The end of the proof of corollary 16-XXII (b) (p. 512): the tree with every sprout equal to tau has ordinal o(tau) + 1; the case y = 2^s of the proof of theorem 16-LI (p. 564): o(x) < o(tau) + 1 <=> [o(x) = 0 or every sprout of x has ordinal < o(tau)].",
+  "limitations": "Vertices are lists, n * y is n :: y; o_tau(a) is defined through the immediate successors of a (the book takes all vertices below a; the ordinal is the same). Codes of tuples, recursive trees and indices (T, ||z||, b(n, z)) are not formalized; the formula of the proof of theorem 16-XXI is the second form of the lemma for the trees of x and y. The sum and product of trees (exercise 16-25), the Kleene-Brouwer ordering and the examples on finite trees are checked in checks/haskell/CheckCh16Trees.hs (finite ordinals only).",
+  "passages": [
+   "sec:finite-path-trees",
+   "ex:finite-path-subtree",
+   "lem:basic-tree-lemma",
+   "ex:basic-tree-lemma-proof",
+   "cor:boundedness-uniform",
+   "th:delta11-below-h"
+  ]
+ },
+ {
+  "file": "checks/lean/RogersRecursive/Ch15_16Functionals.lean",
+  "declarations": [
+   "RogersRecursive.Ch15_16.Functionals.weak_domain",
+   "RogersRecursive.Ch15_16.Functionals.strong_domain_const",
+   "RogersRecursive.Ch15_16.Functionals.printed_fails",
+   "RogersRecursive.Ch15_16.Functionals.friedberg_corrected",
+   "RogersRecursive.Ch15_16.Functionals.friedberg_indices",
+   "RogersRecursive.Ch15_16.Functionals.friedberg_k_zero",
+   "RogersRecursive.Ch15_16.Functionals.friedberg_printed_insufficient",
+   "RogersRecursive.Ch15_16.Functionals.reduction_printed",
+   "RogersRecursive.Ch15_16.Functionals.image_ne",
+   "RogersRecursive.Ch15_16.Functionals.printed_hint_useless",
+   "RogersRecursive.Ch15_16.Functionals.shoenfield_union"
+  ],
+  "book": "§ 15.3, p. 459, the weak domain of the functional of an enumeration operator as corrected ({phi | Phi(tau(phi)) has at most one element}): exercise 15-26 (a) (if Phi(tau(f)) has at most one element for every total f, then for every partial phi) and (b) (exactly one element everywhere => constant); the printed reading ('not empty') fails 15-26 (a) on the operator Phi_0(A) = {0} if some <0, b> in A. Theorem 15-XXXI (Friedberg, p. 464): for the psi of the proof, with k /= 0 and phi_(x')(n) /= k for x' < n (corrected) psi diverges on every index of g and every index of g is >= n; the printed condition 'every index of g is >= n' does not suffice (a numbering where it holds and psi converges on an index of g; for k = 0 psi converges on every index). Theorem 16-XXVII (p. 517): with the printed A' n B = empty and A = N one gets A' = N - B. Exercise 16-46 (a) (p. 575): f(y) = p_x(z), y in T, z not in T give f(T) /= p_x(T) (corrected hint); the printed f(y) /= p_x(z) does not. Exercise 16-93 (p. 582): with D_(beta+1) = D_beta n J(D_beta) the printed union at omega gives D_0 for every operator J.",
+  "limitations": "Enumeration operators enter only through monotonicity (theorem 9-XXI), partial functions are single-valued sets of pairs; the numbering of the Friedberg step is an arbitrary map to partial functions (not shown acceptable), psi(x) converges iff Dom phi x. Recursiveness, the jump and the classes Pi^1_1 are not formalized: the consequences for Pi^1_1 sets and degrees are the arguments of the logs. Finite models of the weak domain and of p. 460 are in checks/haskell/CheckCh15Functionals.hs.",
+  "passages": [
+   "sec:functionals",
+   "ex:recursive-functional-weak-domain",
+   "th:effective-operations-recursive-functionals",
+   "th:friedberg-effective-operation",
+   "th:pi11-reduction",
+   "ex:h-isomorphic-not-recursive",
+   "ex:shoenfield-chain"
+  ]
+ }
+]
